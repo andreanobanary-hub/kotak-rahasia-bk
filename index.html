@@ -68,18 +68,28 @@
         
         <div class="text-center mb-6">
           <span class="inline-block px-3 py-1 bg-violet-500/20 text-violet-300 border border-violet-500/30 text-xs font-bold rounded-full uppercase tracking-wider mb-2">
-            100% Aman & Anonim
+            100% Aman & Rahasia
           </span>
           <h2 class="text-xl sm:text-2xl font-black text-white">Tulis Surat untuk Kotak Rahasia</h2>
           <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
-            Katakan apa pun yang sedang mengganjal, pertanyaan yang ingin kamu tanyakan ke Guru BK, atau apresiasi untuk teman.
+            Katakan apa pun yang sedang mengganjal atau ceritakan harimu. Kamu bebas menulis nama asli atau nama samaran.
           </p>
         </div>
 
-        <form id="secret-form" onsubmit="submitLetter(event)" class="space-y-5">
-          <!-- Pilihan Jenis Kapsul -->
+        <form id="secret-form" onsubmit="submitLetter(event)" class="space-y-4">
+          
+          <!-- Nama / Nama Samaran (Opsional) -->
           <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Pilih Jenis Surat:</label>
+            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              Nama Siswa / Nama Samaran:
+            </label>
+            <input type="text" id="input-name" placeholder="Kosongkan jika ingin 100% anonim (misal: Bintang Senja)"
+              class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
+          </div>
+
+          <!-- Pilihan Jenis Kapsul / Kategori Masalah -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Kategori Masalah / Topik:</label>
             <div class="grid grid-cols-2 gap-2" id="category-selector">
               <!-- Render via JS -->
             </div>
@@ -87,16 +97,28 @@
 
           <!-- Pesan / Surat -->
           <div>
-            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Isi Surat / Pesan Rahasia:</label>
+            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Isi Surat / Pesan Rahasia:</label>
             <textarea id="input-message" rows="4" required maxlength="300"
-              placeholder="Tuliskan di sini dengan santai... Guru BK akan membacanya tanpa ada yang tahu siapa pengirimnya."
-              class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-2xl text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition"></textarea>
+              placeholder="Tuliskan di sini dengan santai... Guru BK akan membacanya dengan menjaga kerahasiaanmu."
+              class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-2xl text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition resize-none"></textarea>
             <p class="text-right text-[11px] text-slate-500 mt-1" id="char-counter">0 / 300 karakter</p>
+          </div>
+
+          <!-- Rencana Tindak Lanjut -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              Rencana Tindak Lanjut:
+            </label>
+            <select id="input-followup" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 transition">
+              <option value="Hanya ingin didengar / curhat saja">🕊️ Hanya ingin didengar / curhat saja (Tanpa dipanggil)</option>
+              <option value="Ya, butuh konseling tatap muka">🤝 Ya, butuh konseling tatap muka dengan Guru BK</option>
+              <option value="Bahas secara umum di kelas">📢 Bahas solusinya secara umum saat jam pelajaran BK</option>
+            </select>
           </div>
 
           <!-- Tombol Kirim -->
           <button type="submit" id="btn-submit"
-            class="w-full py-3.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-extrabold rounded-2xl text-sm transition-all shadow-lg shadow-violet-600/30 active:scale-95 flex items-center justify-center space-x-2">
+            class="w-full py-3.5 mt-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-extrabold rounded-2xl text-sm transition-all shadow-lg shadow-violet-600/30 active:scale-95 flex items-center justify-center space-x-2">
             <span>📮 Masukkan ke Peti Rahasia</span>
           </button>
         </form>
@@ -155,7 +177,7 @@
               <span id="opened-badge" class="px-3 py-1 bg-amber-200 text-amber-900 rounded-lg text-xs font-black uppercase tracking-wider">
                 💌 Kategori Surat
               </span>
-              <span class="text-xs font-bold text-slate-500">Anonim 🤫</span>
+              <span id="opened-sender" class="text-xs font-bold text-slate-500">Anonim 🤫</span>
             </div>
 
             <!-- Pesan Surat -->
@@ -167,7 +189,7 @@
             <div class="bg-white/80 border border-amber-200 rounded-2xl p-3.5 mt-4">
               <p class="text-[11px] font-black uppercase tracking-wider text-amber-800">💡 Panduan Diskusi Guru BK:</p>
               <p id="opened-guide" class="text-xs text-slate-700 mt-1 leading-normal">
-                Validasi perasaan pengirim dan ajak teman sekelas memberikan dukungan tanpa berusaha menebak-nebak siapa pengirimnya.
+                Validasi perasaan pengirim dan ajak teman sekelas memberikan dukungan tanpa berusaha mencari tahu siapa pengirimnya.
               </p>
             </div>
 
@@ -196,7 +218,7 @@
 
   <!-- SCRIPT LOGIKA -->
   <script>
-    // URL Google Apps Script yang aktif
+    // URL Google Apps Script Anda
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvwduYnVaijUAz3pttU8afm_vISYRPhcWqEU_ucqa8h4EwJ2u9BmhWPHiLt1iifsdY0w/exec";
 
     // Kategori Surat Kapsul
@@ -210,7 +232,7 @@
     let selectedCat = "curhat";
     let letters = JSON.parse(localStorage.getItem("bk_secret_box_letters") || "[]");
 
-    // Audio Effect
+    // Efek Suara (Web Audio API)
     function playSound(type) {
       try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -261,41 +283,45 @@
       });
     }
 
-    // Penghitung Karakter
+    // Counter Karakter
     document.getElementById("input-message").addEventListener("input", function() {
       document.getElementById("char-counter").textContent = `${this.value.length} / 300 karakter`;
     });
 
-    // Kirim Surat: Simpan Lokal & Kirim ke Google Sheets
+    // Kirim Surat
     async function submitLetter(e) {
       e.preventDefault();
       const msg = document.getElementById("input-message").value.trim();
       if (!msg) return;
 
+      const nameVal = document.getElementById("input-name").value.trim() || "Anonim";
+      const followupVal = document.getElementById("input-followup").value;
+      const categoryObj = CATEGORIES.find(c => c.id === selectedCat) || CATEGORIES[0];
+      const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
       const submitBtn = document.getElementById("btn-submit");
       submitBtn.disabled = true;
       submitBtn.innerHTML = "<span>⏳ Memasukkan ke Peti...</span>";
 
-      const categoryObj = CATEGORIES.find(c => c.id === selectedCat) || CATEGORIES[0];
-      const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      // 1. Simpan di Local Storage untuk Proyektor
+      // 1. Simpan ke Local Storage untuk mode proyektor di kelas
       const newLetter = {
         id: Date.now(),
+        sender: nameVal,
         categoryId: selectedCat,
         message: msg,
+        followup: followupVal,
         timestamp: currentTime
       };
       letters.push(newLetter);
       localStorage.setItem("bk_secret_box_letters", JSON.stringify(letters));
       playSound('submit');
 
-      // 2. Kirim ke Google Sheets via Google Apps Script
+      // 2. Kirim ke Google Sheets
       const payload = {
+        namaSiswa: nameVal,
         kategori: categoryObj.name,
-        namaSamaran: "Anonim",
         pesan: msg,
-        waktu: currentTime
+        tindakLanjut: followupVal
       };
 
       try {
@@ -308,12 +334,14 @@
           body: JSON.stringify(payload)
         });
       } catch (err) {
-        console.error("Gagal mengirim ke Google Sheets:", err);
+        console.error("Gagal mengirim ke Sheets:", err);
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = "<span>📮 Masukkan ke Peti Rahasia</span>";
       }
 
+      // Reset form
+      document.getElementById("input-name").value = "";
       document.getElementById("input-message").value = "";
       document.getElementById("char-counter").textContent = "0 / 300 karakter";
       document.getElementById("submit-alert").classList.remove("hidden");
@@ -325,7 +353,7 @@
       updateStats();
     }
 
-    // Switch View Tab
+    // Ganti Tampilan Tab
     function switchView(view) {
       const vStudent = document.getElementById("view-student");
       const vTeacher = document.getElementById("view-teacher");
@@ -354,7 +382,7 @@
     // Buka Surat Acak (Guru BK)
     function drawRandomLetter() {
       if (letters.length === 0) {
-        alert("Peti masih kosong! Siswa dapat mengisi surat terlebih dahulu lewat menu 'Kirim Surat'.");
+        alert("Peti masih kosong! Siswa dapat mengisi surat terlebih dahulu lewat tab 'Kirim Surat'.");
         return;
       }
 
@@ -366,6 +394,7 @@
       const categoryObj = CATEGORIES.find(c => c.id === chosen.categoryId) || CATEGORIES[0];
 
       document.getElementById("opened-badge").textContent = `${categoryObj.icon} ${categoryObj.name}`;
+      document.getElementById("opened-sender").textContent = `${chosen.sender || "Anonim"} 🤫`;
       document.getElementById("opened-text").textContent = `"${chosen.message}"`;
       document.getElementById("opened-guide").textContent = categoryObj.guide;
 
@@ -380,10 +409,10 @@
 
     function addDemoLetters() {
       const demo = [
-        { id: 1, categoryId: "curhat", message: "Saya sering merasa takut salah kalau disuruh presentasi di depan kelas sampai tangan dingin." },
-        { id: 2, categoryId: "tanya-bk", message: "Bu/Pak Guru, apakah kalau curhat ke ruang BK tentang masalah keluarga nilainya bakal dikurangi?" },
-        { id: 3, categoryId: "apresiasi", message: "Terima kasih untuk teman sebangku saya yang tadi pagi mau meminjamkan bolpoin waktu punya saya habis." },
-        { id: 4, categoryId: "ide-kelas", message: "Harapan saya semoga minggu ini tidak ada yang saling mengejek nama orang tua lagi di pojokan kelas." }
+        { id: 1, sender: "Anonim", categoryId: "curhat", message: "Saya sering merasa takut salah kalau disuruh presentasi di depan kelas sampai tangan dingin.", followup: "Hanya ingin didengar / curhat saja" },
+        { id: 2, sender: "Bintang Senja", categoryId: "tanya-bk", message: "Bu/Pak Guru, apakah kalau curhat ke ruang BK nilainya bakal dikurangi?", followup: "Bahas secara umum di kelas" },
+        { id: 3, sender: "Sahabatmu", categoryId: "apresiasi", message: "Terima kasih untuk teman sebangku saya yang tadi pagi mau meminjamkan bolpoin.", followup: "Hanya ingin didengar / curhat saja" },
+        { id: 4, sender: "Anonim", categoryId: "ide-kelas", message: "Harapan saya semoga minggu ini tidak ada yang saling mengejek nama orang tua lagi.", followup: "Bahas secara umum di kelas" }
       ];
 
       letters = [...letters, ...demo];
